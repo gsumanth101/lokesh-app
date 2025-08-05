@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Dashboard - Smart Farming Assistant</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='interface-styles.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1><i class="fas fa-user-tie"></i> Agent Dashboard</h1>
+                <p>Manage and Facilitate Transactions Between Farmers and Buyers</p>
+                <div class="header-actions">
+                    <div class="user-info">
+                        <span id="user-name">Welcome, Agent!</span>
+                        <button class="btn-logout" onclick="logout()">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    </div>
+                    <div class="language-selector">
+                        <select id="languageSelect" onchange="changeLanguage()">
+                            <option value="en">English</option>
+                            <option value="hi">हिंदी</option>
+                            <option value="te">తెలుగు</option>
+                            <option value="ta">தமிழ்</option>
+                            <option value="kn">ಕನ್ನಡ</option>
+                            <option value="ml">മലയാളം</option>
+                            <option value="gu">ગુજરાતી</option>
+                            <option value="mr">मराठी</option>
+                            <option value="bn">বাংলা</option>
+                            <option value="pa">ਪੰਜਾਬੀ</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="nav-tabs">
+            <button class="tab-button active" onclick="showTab('manage-farmers')">
+                <i class="fas fa-tractor"></i> <span data-lang="manage_farmers">Manage Farmers</span>
+            </button>
+            <button class="tab-button" onclick="showTab('manage-buyers')">
+                <i class="fas fa-users"></i> <span data-lang="manage_buyers">Manage Buyers</span>
+            </button>
+            <button class="tab-button" onclick="showTab('transactions')">
+                <i class="fas fa-exchange-alt"></i> <span data-lang="transactions">Transactions</span>
+            </button>
+            <button class="tab-button" onclick="showTab('requests')">
+                <i class="fas fa-clipboard-list"></i> <span data-lang="requests">Support Requests</span>
+            </button>
+            <button class="tab-button" onclick="showTab('reports')">
+                <i class="fas fa-file-alt"></i> <span data-lang="reports">Reports</span>
+            </button>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Manage Farmers Tab -->
+            <div id="manage-farmers" class="tab-content active">
+                <div class="section-header">
+                    <h2><i class="fas fa-tractor"></i> <span data-lang="manage_farmers_title">Manage Farmers</span></h2>
+                    <p data-lang="manage_farmers_desc">Oversee farmers' profiles, listings, and activities</p>
+                </div>
+                <div class="farmer-actions">
+                    <button class="btn-primary" onclick="addFarmer()">
+                        <i class="fas fa-plus"></i> Add Farmer
+                    </button>
+                    <button class="btn-secondary" onclick="refreshFarmers()">
+                        <i class="fas fa-sync"></i> Refresh List
+                    </button>
+                </div>
+                <div id="farmers-list" class="entity-list">
+                    <!-- Farmers list will be populated here -->
+                </div>
+            </div>
+
+            <!-- Manage Buyers Tab -->
+            <div id="manage-buyers" class="tab-content">
+                <div class="section-header">
+                    <h2><i class="fas fa-users"></i> <span data-lang="manage_buyers_title">Manage Buyers</span></h2>
+                    <p data-lang="manage_buyers_desc">Manage buyer accounts and purchasing activities</p>
+                </div>
+                <div class="buyer-actions">
+                    <button class="btn-primary" onclick="addBuyer()">
+                        <i class="fas fa-plus"></i> Add Buyer
+                    </button>
+                    <button class="btn-secondary" onclick="refreshBuyers()">
+                        <i class="fas fa-sync"></i> Refresh List
+                    </button>
+                </div>
+                <div id="buyers-list" class="entity-list">
+                    <!-- Buyers list will be populated here -->
+                </div>
+            </div>
+
+            <!-- Transactions Tab -->
+            <div id="transactions" class="tab-content">
+                <div class="section-header">
+                    <h2><i class="fas fa-exchange-alt"></i> <span data-lang="transactions_title">Transactions</span></h2>
+                    <p data-lang="transactions_desc">Monitor and manage transactions between parties</p>
+                </div>
+                <div class="transactions-filters">
+                    <select id="transaction-status-filter" onchange="filterTransactions()">
+                        <option value="">All Transactions</option>
+                        <option value="pending">Pending</option>
+                        <option value="completed">Completed</option>
+                        <option value="disputed">Disputed</option>
+                    </select>
+                    <input type="date" id="transaction-date-filter" onchange="filterTransactions()">
+                </div>
+                <div id="transactions-list" class="transactions-list">
+                    <!-- Transactions will be displayed here -->
+                </div>
+            </div>
+
+            <!-- Support Requests Tab -->
+            <div id="requests" class="tab-content">
+                <div class="section-header">
+                    <h2><i class="fas fa-clipboard-list"></i> <span data-lang="requests_title">Support Requests</span></h2>
+                    <p data-lang="requests_desc">Handle support requests from users</p>
+                </div>
+                <div class="request-filters">
+                    <select id="request-status-filter" onchange="filterRequests()">
+                        <option value="">All Requests</option>
+                        <option value="open">Open</option>
+                        <option value="closed">Closed</option>
+                        <option value="urgent">Urgent</option>
+                    </select>
+                </div>
+                <div id="requests-list" class="requests-list">
+                    <!-- Requests will be listed here -->
+                </div>
+            </div>
+
+            <!-- Reports Tab -->
+            <div id="reports" class="tab-content">
+                <div class="section-header">
+                    <h2><i class="fas fa-file-alt"></i> <span data-lang="reports_title">Reports</span></h2>
+                    <p data-lang="reports_desc">Generate and download analytics reports</p>
+                </div>
+                <div class="report-actions">
+                    <button class="btn-primary" onclick="generateReport()">
+                        <i class="fas fa-chart-pie"></i> Generate Report
+                    </button>
+                    <button class="btn-secondary" onclick="downloadReports()">
+                        <i class="fas fa-download"></i> Download Reports
+                    </button>
+                </div>
+                <div id="reports-list" class="reports-list">
+                    <!-- Reports will be displayed here -->
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <p>&copy; 2025 Smart Farming Assistant - Agent Portal. <span data-lang="all_rights_reserved">All rights reserved.</span></p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='translations.js') }}"></script>
+    <script src="{{ url_for('static', filename='agent-script.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+Crop,Price,Unit,Trend,Last_Updated
+wheat,2000,quintal,Stable,2025-01-10
+rice,2500,quintal,Increasing,2025-01-10
+maize,1800,quintal,Decreasing,2025-01-10
+barley,2200,quintal,Stable,2025-01-10
+millet,3000,quintal,Increasing,2025-01-10
+cotton,5000,quintal,Stable,2025-01-10
+sugarcane,280,quintal,Increasing,2025-01-10
+tomato,1500,quintal,Volatile,2025-01-10
+potato,800,quintal,Stable,2025-01-10
+onion,1200,quintal,Increasing,2025-01-10

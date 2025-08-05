@@ -1,0 +1,147 @@
+1. Alsandikai
+2. Amaranthus
+3. Amla(Nelli Kai)
+4. Amphophalus
+5. Amranthas Red
+6. Apple
+7. Arecanut(Betelnut/Supari)
+8. Arhar (Tur/Red Gram)(Whole)
+9. Arhar Dal(Tur Dal)
+10. Ashgourd
+11. Bajra(Pearl Millet/Cumbu)
+12. Banana
+13. Banana - Green
+14. Barley (Jau)
+15. Beans
+16. Beetroot
+17. Bengal Gram Dal (Chana Dal)
+18. Bengal Gram(Gram)(Whole)
+19. Bhindi(Ladies Finger)
+20. Bitter gourd
+21. Black Gram Dal (Urd Dal)
+22. Black pepper
+23. Bottle gourd
+24. Brinjal
+25. Cabbage
+26. Capsicum
+27. Carrot
+28. Castor Seed
+29. Cauliflower
+30. Chikoos(Sapota)
+31. Chili Red
+32. Chilly Capsicum
+33. Cluster beans
+34. Coconut
+35. Coconut Oil
+36. Coconut Seed
+37. Colacasia
+38. Copra
+39. Coriander(Leaves)
+40. Corriander seed
+41. Cotton
+42. Cowpea (Lobia/Karamani)
+43. Cowpea(Veg)
+44. Cucumbar(Kheera)
+45. Cummin Seed(Jeera)
+46. Custard Apple (Sharifa)
+47. Drumstick
+48. Dry Chillies
+49. Elephant Yam (Suran)
+50. Field Pea
+51. Firewood
+52. Fish
+53. French Beans (Frasbean)
+54. Garlic
+55. Ghee
+56. Ginger(Dry)
+57. Ginger(Green)
+58. Grapes
+59. Green Avare (W)
+60. Green Chilli
+61. Green Gram (Moong)(Whole)
+62. Green Peas
+63. Groundnut
+64. Groundnut pods (raw)
+65. Guar
+66. Guar Seed(Cluster Beans Seed)
+67. Guava
+68. Gur(Jaggery)
+69. Indian Beans (Seam)
+70. Isabgul (Psyllium)
+71. Jack Fruit
+72. Jowar(Sorghum)
+73. Jute
+74. Kabuli Chana(Chickpeas-White)
+75. Kartali (Kantola)
+76. Knool Khol
+77. Leafy Vegetable
+78. Lemon
+79. Lentil (Masur)(Whole)
+80. Lime
+81. Little gourd (Kundru)
+82. Long Melon(Kakri)
+83. Mahua
+84. Maize
+85. Mango
+86. Mango (Raw-Ripe)
+87. Marigold(loose)
+88. Mashrooms
+89. Masur Dal
+90. Methi Seeds
+91. Methi(Leaves)
+92. Mint(Pudina)
+93. Mousambi(Sweet Lime)
+94. Mustard
+95. Mustard Oil
+96. Onion
+97. Onion Green
+98. Orange
+99. Other green and fresh vegetables
+100. Paddy(Dhan)(Basmati)
+101. Paddy(Dhan)(Common)
+102. Papaya
+103. Papaya (Raw)
+104. Pear(Marasebu)
+105. Peas Wet
+106. Peas cod
+107. Pegeon Pea (Arhar Fali)
+108. Pepper garbled
+109. Pineapple
+110. Plum
+111. Pointed gourd (Parval)
+112. Pomegranate
+113. Potato
+114. Pumpkin
+115. Raddish
+116. Rice
+117. Ridgeguard(Tori)
+118. Rose(Loose))
+119. Round gourd
+120. Rubber
+121. Seemebadnekai
+122. Seetapal
+123. Sesamum(Sesame,Gingelly,Til)
+124. Snakeguard
+125. Soanf
+126. Soyabean
+127. Spinach
+128. Sponge gourd
+129. Squash(Chappal Kadoo)
+130. Sugar
+131. Surat Beans (Papadi)
+132. Sweet Potato
+133. Sweet Pumpkin
+134. Tamarind Fruit
+135. Tapioca
+136. Tender Coconut
+137. Thondekai
+138. Tinda
+139. Tomato
+140. Turmeric
+141. Turmeric (raw)
+142. Water Melon
+143. Wheat
+144. White Peas
+145. Wood
+146. Yam
+147. Yam (Ratalu)

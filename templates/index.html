@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Farming Assistant - Crop Recommendation System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='interface-styles.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1><i class="fas fa-seedling"></i> Smart Farming Assistant</h1>
+                <p>AI-Powered Crop Recommendation System</p>
+                <div class="header-actions">
+                    <div class="user-info">
+                        <span id="user-name">Welcome, User!</span>
+                        <button class="btn-logout" onclick="logout()">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    </div>
+                    <div class="language-selector">
+                        <select id="languageSelect" onchange="changeLanguage()">
+                            <option value="en">English</option>
+                            <option value="hi">हिंदी</option>
+                            <option value="te">తెలుగు</option>
+                            <option value="ta">தமிழ்</option>
+                            <option value="kn">ಕನ್ನಡ</option>
+                            <option value="ml">മലയാളം</option>
+                            <option value="gu">ગુજરાતી</option>
+                            <option value="mr">मराठी</option>
+                            <option value="bn">বাংলা</option>
+                            <option value="pa">ਪੰਜਾਬੀ</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="nav-tabs">
+            <button class="tab-button active" onclick="showTab('crop-recommendation')">
+                <i class="fas fa-leaf"></i> <span data-lang="crop_recommendation">Crop Recommendation</span>
+            </button>
+            <button class="tab-button" onclick="showTab('weather-info')">
+                <i class="fas fa-cloud-sun"></i> <span data-lang="weather_info">Weather Info</span>
+            </button>
+            <button class="tab-button" onclick="showTab('soil-analysis')">
+                <i class="fas fa-mountain"></i> <span data-lang="soil_analysis">Soil Analysis</span>
+            </button>
+            <button class="tab-button" onclick="showTab('market-prices')">
+                <i class="fas fa-chart-line"></i> <span data-lang="market_prices">Market Prices</span>
+            </button>
+            <button class="tab-button" onclick="showTab('pest-control')">
+                <i class="fas fa-bug"></i> <span data-lang="pest_control">Pest Control</span>
+            </button>
+            <button class="tab-button" onclick="showTab('farmer-marketplace')">
+                <i class="fas fa-store"></i> <span data-lang="farmer_marketplace">Marketplace</span>
+            </button>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Crop Recommendation Tab -->
+            <div id="crop-recommendation" class="tab-content active">
+                <div class="section-header">
+                    <h2><i class="fas fa-seedling"></i> <span data-lang="crop_recommendation_title">Crop Recommendation System</span></h2>
+                    <p data-lang="crop_recommendation_desc">Get AI-powered crop recommendations based on location, weather, and soil conditions</p>
+                </div>
+                
+                <div class="form-container">
+                    <div class="input-group">
+                        <label for="location"><i class="fas fa-map-marker-alt"></i> <span data-lang="location">Location</span></label>
+                        <input type="text" id="location" placeholder="Enter your location (e.g., Bangalore, India)">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="weather-api-key"><i class="fas fa-key"></i> <span data-lang="weather_api_key">Weather API Key</span></label>
+                        <input type="password" id="weather-api-key" placeholder="Enter your WeatherAPI key">
+                        <small><a href="https://www.weatherapi.com/" target="_blank" data-lang="get_free_api">Get free API key</a></small>
+                    </div>
+                    
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="manual-soil" onchange="toggleManualSoil()">
+                        <label for="manual-soil" data-lang="manual_soil_data">Use Manual Soil Data</label>
+                    </div>
+                    
+                    <div id="manual-soil-inputs" class="manual-soil-section" style="display: none;">
+                        <h3 data-lang="soil_parameters">Soil Parameters</h3>
+                        <div class="soil-inputs-grid">
+                            <div class="input-group">
+                                <label for="nitrogen">N <span data-lang="nitrogen">(Nitrogen)</span></label>
+                                <input type="number" id="nitrogen" min="0" max="200" value="80">
+                            </div>
+                            <div class="input-group">
+                                <label for="phosphorus">P <span data-lang="phosphorus">(Phosphorus)</span></label>
+                                <input type="number" id="phosphorus" min="0" max="200" value="40">
+                            </div>
+                            <div class="input-group">
+                                <label for="potassium">K <span data-lang="potassium">(Potassium)</span></label>
+                                <input type="number" id="potassium" min="0" max="200" value="60">
+                            </div>
+                            <div class="input-group">
+                                <label for="ph">pH <span data-lang="ph_level">(pH Level)</span></label>
+                                <input type="number" id="ph" min="0" max="14" step="0.1" value="6.5">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn-primary" onclick="getCropRecommendation()">
+                        <i class="fas fa-search"></i> <span data-lang="get_recommendation">Get Recommendation</span>
+                    </button>
+                </div>
+                
+                <div id="recommendation-result" class="result-container" style="display: none;">
+                    <!-- Results will be populated here -->
+                </div>
+            </div>
+
+            <!-- Weather Info Tab -->
+            <div id="weather-info" class="tab-content">
+                <div class="section-header">
+                    <h2><i class="fas fa-cloud-sun"></i> <span data-lang="weather_information">Weather Information</span></h2>
+                    <p data-lang="weather_desc">Get current weather conditions for your location</p>
+                </div>
+                
+                <div class="form-container">
+                    <div class="input-group">
+                        <label for="weather-location"><i class="fas fa-map-marker-alt"></i> <span data-lang="location">Location</span></label>
+                        <input type="text" id="weather-location" placeholder="Enter location">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="weather-key"><i class="fas fa-key"></i> <span data-lang="weather_api_key">Weather API Key</span></label>
+                        <input type="password" id="weather-key" placeholder="Enter your WeatherAPI key">
+                    </div>
+                    
+                    <button class="btn-primary" onclick="getWeatherInfo()">
+                        <i class="fas fa-cloud"></i> <span data-lang="get_weather">Get Weather</span>
+                    </button>
+                </div>
+                
+                <div id="weather-result" class="result-container" style="display: none;">
+                    <!-- Weather results will be populated here -->
+                </div>
+            </div>
+
+            <!-- Soil Analysis Tab -->
+            <div id="soil-analysis" class="tab-content">
+                <div class="section-header">
+                    <h2><i class="fas fa-mountain"></i> <span data-lang="soil_analysis_title">Soil Analysis</span></h2>
+                    <p data-lang="soil_analysis_desc">Analyze soil conditions and get recommendations</p>
+                </div>
+                
+                <div class="form-container">
+                    <div class="soil-inputs-grid">
+                        <div class="input-group">
+                            <label for="soil-nitrogen">N <span data-lang="nitrogen">(Nitrogen)</span></label>
+                            <input type="number" id="soil-nitrogen" min="0" max="200" value="80">
+                        </div>
+                        <div class="input-group">
+                            <label for="soil-phosphorus">P <span data-lang="phosphorus">(Phosphorus)</span></label>
+                            <input type="number" id="soil-phosphorus" min="0" max="200" value="40">
+                        </div>
+                        <div class="input-group">
+                            <label for="soil-potassium">K <span data-lang="potassium">(Potassium)</span></label>
+                            <input type="number" id="soil-potassium" min="0" max="200" value="60">
+                        </div>
+                        <div class="input-group">
+                            <label for="soil-ph">pH <span data-lang="ph_level">(pH Level)</span></label>
+                            <input type="number" id="soil-ph" min="0" max="14" step="0.1" value="6.5">
+                        </div>
+                    </div>
+                    
+                    <button class="btn-primary" onclick="analyzeSoil()">
+                        <i class="fas fa-flask"></i> <span data-lang="analyze_soil">Analyze Soil</span>
+                    </button>
+                </div>
+                
+                <div id="soil-result" class="result-container" style="display: none;">
+                    <!-- Soil analysis results will be populated here -->
+                </div>
+            </div>
+
+            <!-- Market Prices Tab -->
+            <div id="market-prices" class="tab-content">
+                <div class="section-header">
+                    <h2><i class="fas fa-chart-line"></i> <span data-lang="market_prices_title">Market Prices</span></h2>
+                    <p data-lang="market_prices_desc">Check current market prices for crops</p>
+                </div>
+                
+                <div class="market-grid" id="market-grid">
+                    <!-- Market prices will be populated here -->
+                </div>
+            </div>
+
+            <!-- Pest Control Tab -->
+            <div id="pest-control" class="tab-content">
+                <div class="section-header">
+                    <h2><i class="fas fa-bug"></i> <span data-lang="pest_control_title">Pest Control</span></h2>
+                    <p data-lang="pest_control_desc">Get information about pest control measures</p>
+                </div>
+                
+                <div class="form-container">
+                    <div class="input-group">
+                        <label for="crop-type"><i class="fas fa-seedling"></i> <span data-lang="crop_type">Crop Type</span></label>
+                        <select id="crop-type">
+                            <option value="">Select crop</option>
+                            <option value="wheat">Wheat</option>
+                            <option value="rice">Rice</option>
+                            <option value="maize">Maize</option>
+                            <option value="cotton">Cotton</option>
+                            <option value="sugarcane">Sugarcane</option>
+                            <option value="tomato">Tomato</option>
+                            <option value="potato">Potato</option>
+                            <option value="onion">Onion</option>
+                        </select>
+                    </div>
+                    
+                    <button class="btn-primary" onclick="getPestControl()">
+                        <i class="fas fa-shield-alt"></i> <span data-lang="get_pest_info">Get Pest Control Info</span>
+                    </button>
+                </div>
+                
+                <div id="pest-result" class="result-container" style="display: none;">
+                    <!-- Pest control results will be populated here -->
+                </div>
+            </div>
+
+            <!-- Farmer Marketplace Tab -->
+            <div id="farmer-marketplace" class="tab-content">
+                <div class="section-header">
+                    <h2><i class="fas fa-store"></i> <span data-lang="farmer_marketplace_title">Farmer Marketplace</span></h2>
+                    <p data-lang="farmer_marketplace_desc">Buy and sell crops directly with farmers</p>
+                </div>
+                
+                <div class="marketplace-actions">
+                    <button class="btn-secondary" onclick="showAddListing()">
+                        <i class="fas fa-plus"></i> <span data-lang="add_listing">Add Listing</span>
+                    </button>
+                    <button class="btn-secondary" onclick="refreshMarketplace()">
+                        <i class="fas fa-refresh"></i> <span data-lang="refresh">Refresh</span>
+                    </button>
+                </div>
+                
+                <div id="add-listing-form" class="form-container" style="display: none;">
+                    <h3 data-lang="add_new_listing">Add New Listing</h3>
+                    <div class="input-group">
+                        <label for="listing-crop"><i class="fas fa-seedling"></i> <span data-lang="crop_name">Crop Name</span></label>
+                        <input type="text" id="listing-crop" placeholder="Enter crop name">
+                    </div>
+                    <div class="input-group">
+                        <label for="listing-quantity"><i class="fas fa-weight"></i> <span data-lang="quantity">Quantity (kg)</span></label>
+                        <input type="number" id="listing-quantity" min="1" placeholder="Enter quantity">
+                    </div>
+                    <div class="input-group">
+                        <label for="listing-price"><i class="fas fa-rupee-sign"></i> <span data-lang="price">Price per kg</span></label>
+                        <input type="number" id="listing-price" min="0" step="0.01" placeholder="Enter price">
+                    </div>
+                    <div class="input-group">
+                        <label for="listing-contact"><i class="fas fa-phone"></i> <span data-lang="contact">Contact Info</span></label>
+                        <input type="text" id="listing-contact" placeholder="Enter contact information">
+                    </div>
+                    <div class="input-group">
+                        <label for="listing-location"><i class="fas fa-map-marker-alt"></i> <span data-lang="location">Location</span></label>
+                        <input type="text" id="listing-location" placeholder="Enter location">
+                    </div>
+                    <div class="form-actions">
+                        <button class="btn-primary" onclick="addListing()">
+                            <i class="fas fa-save"></i> <span data-lang="save_listing">Save Listing</span>
+                        </button>
+                        <button class="btn-secondary" onclick="cancelListing()">
+                            <i class="fas fa-times"></i> <span data-lang="cancel">Cancel</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="marketplace-listings" class="marketplace-listings">
+                    <!-- Marketplace listings will be populated here -->
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <p>&copy; 2025 Smart Farming Assistant. <span data-lang="all_rights_reserved">All rights reserved.</span></p>
+                <div class="footer-links">
+                    <a href="#" data-lang="about">About</a>
+                    <a href="#" data-lang="contact">Contact</a>
+                    <a href="#" data-lang="privacy">Privacy Policy</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="loading-spinner" class="loading-spinner" style="display: none;">
+        <div class="spinner"></div>
+        <p data-lang="loading">Loading...</p>
+    </div>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='translations.js') }}"></script>
+    <script src="{{ url_for('static', filename='interface-script.js') }}"></script>
+</body>
+</html>

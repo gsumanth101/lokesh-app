@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buyer Dashboard - Smart Farming Assistant</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='interface-styles.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1><i class="fas fa-shopping-cart"></i> Buyer Dashboard</h1>
+                <p>Find and Purchase Quality Crops Directly from Farmers</p>
+                <div class="header-actions">
+                    <div class="user-info">
+                        <span id="user-name">Welcome, Buyer!</span>
+                        <button class="btn-logout" onclick="logout()">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    </div>
+                    <div class="language-selector">
+                        <select id="languageSelect" onchange="changeLanguage()">
+                            <option value="en">English</option>
+                            <option value="hi">हिंदी</option>
+                            <option value="te">తెలుగు</option>
+                            <option value="ta">தமிழ்</option>
+                            <option value="kn">ಕನ್ನಡ</option>
+                            <option value="ml">മലയാളം</option>
+                            <option value="gu">ગુજરાતી</option>
+                            <option value="mr">मराठी</option>
+                            <option value="bn">বাংলা</option>
+                            <option value="pa">ਪੰਜਾਬੀ</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="nav-tabs">
+            <button class="tab-button active" onclick="showTab('browse-crops')">
+                <i class="fas fa-search"></i> <span data-lang="browse_crops">Browse Crops</span>
+            </button>
+            <button class="tab-button" onclick="showTab('market-prices')">
+                <i class="fas fa-chart-line"></i> <span data-lang="market_prices">Market Prices</span>
+            </button>
+            <button class="tab-button" onclick="showTab('my-orders')">
+                <i class="fas fa-shopping-bag"></i> <span data-lang="my_orders">My Orders</span>
+            </button>
+            <button class="tab-button" onclick="showTab('favorites')">
+                <i class="fas fa-heart"></i> <span data-lang="favorites">Favorites</span>
+            </button>
+            <button class="tab-button" onclick="showTab('price-alerts')">
+                <i class="fas fa-bell"></i> <span data-lang="price_alerts">Price Alerts</span>
+            </button>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Browse Crops Tab -->
+            <div id="browse-crops" class="tab-content active">
+                <div class="section-header">
+                    <h2><i class="fas fa-search"></i> <span data-lang="browse_crops_title">Browse Available Crops</span></h2>
+                    <p data-lang="browse_crops_desc">Find and purchase quality crops directly from farmers</p>
+                </div>
+                
+                <div class="search-filters">
+                    <div class="filter-group">
+                        <label for="crop-filter"><i class="fas fa-seedling"></i> Crop Type</label>
+                        <select id="crop-filter" onchange="filterCrops()">
+                            <option value="">All Crops</option>
+                            <option value="rice">Rice</option>
+                            <option value="wheat">Wheat</option>
+                            <option value="maize">Maize</option>
+                            <option value="cotton">Cotton</option>
+                            <option value="sugarcane">Sugarcane</option>
+                            <option value="tomato">Tomato</option>
+                            <option value="potato">Potato</option>
+                            <option value="onion">Onion</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="location-filter"><i class="fas fa-map-marker-alt"></i> Location</label>
+                        <input type="text" id="location-filter" placeholder="Search by location" onkeyup="filterCrops()">
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="price-range"><i class="fas fa-rupee-sign"></i> Price Range</label>
+                        <input type="range" id="price-range" min="0" max="100" value="100" onchange="filterCrops()">
+                        <span id="price-range-value">₹0 - ₹100</span>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="sort-by"><i class="fas fa-sort"></i> Sort By</label>
+                        <select id="sort-by" onchange="sortCrops()">
+                            <option value="price-low">Price: Low to High</option>
+                            <option value="price-high">Price: High to Low</option>
+                            <option value="quantity">Quantity Available</option>
+                            <option value="location">Location</option>
+                            <option value="date">Date Listed</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div id="crops-grid" class="crops-grid">
+                    <!-- Available crops will be populated here -->
+                </div>
+            </div>
+
+            <!-- Market Prices Tab -->
+            <div id="market-prices" class="tab-content">
+                <div class="section-header">
+                    <h2><i class="fas fa-chart-line"></i> <span data-lang="market_prices_title">Current Market Prices</span></h2>
+                    <p data-lang="market_prices_desc">Stay updated with latest market trends and prices</p>
+                </div>
+                
+                <div class="price-actions">
+                    <button class="btn-primary" onclick="refreshPrices()">
+                        <i class="fas fa-refresh"></i> Refresh Prices
+                    </button>
+                    <button class="btn-secondary" onclick="downloadPriceReport()">
+                        <i class="fas fa-download"></i> Download Report
+                    </button>
+                </div>
+                
+                <div class="market-grid" id="market-grid">
+                    <!-- Market prices will be populated here -->
+                </div>
+                
+                <div class="price-trends">
+                    <h3><i class="fas fa-trending-up"></i> Price Trends</h3>
+                    <div id="price-trends-chart" class="chart-placeholder">
+                        <i class="fas fa-chart-line"></i>
+                        <p>Price trends chart will be displayed here</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- My Orders Tab -->
+            <div id="my-orders" class="tab-content">
+                <div class="section-header">
+                    <h2><i class="fas fa-shopping-bag"></i> <span data-lang="my_orders_title">My Orders</span></h2>
+                    <p data-lang="my_orders_desc">Track your purchase orders and transaction history</p>
+                </div>
+                
+                <div class="order-stats">
+                    <div class="stat-card">
+                        <h3><i class="fas fa-shopping-cart"></i> Active Orders</h3>
+                        <div class="stat-number" id="active-orders">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3><i class="fas fa-check-circle"></i> Completed Orders</h3>
+                        <div class="stat-number" id="completed-orders">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3><i class="fas fa-rupee-sign"></i> Total Spent</h3>
+                        <div class="stat-number" id="total-spent">₹0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3><i class="fas fa-weight"></i> Total Purchased</h3>
+                        <div class="stat-number" id="total-purchased">0 kg</div>
+                    </div>
+                </div>
+                
+                <div class="order-filters">
+                    <select id="order-status-filter" onchange="filterOrders()">
+                        <option value="">All Orders</option>
+                        <option value="pending">Pending</option>
+                        <option value="confirmed">Confirmed</option>
+                        <option value="shipped">Shipped</option>
+                        <option value="delivered">Delivered</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                    
+                    <input type="date" id="order-date-filter" onchange="filterOrders()">
+                </div>
+                
+                <div id="orders-list" class="orders-list">
+                    <!-- Orders will be populated here -->
+                </div>
+            </div>
+
+            <!-- Favorites Tab -->
+            <div id="favorites" class="tab-content">
+                <div class="section-header">
+                    <h2><i class="fas fa-heart"></i> <span data-lang="favorites_title">Favorite Farmers & Crops</span></h2>
+                    <p data-lang="favorites_desc">Quick access to your preferred farmers and crops</p>
+                </div>
+                
+                <div class="favorites-tabs">
+                    <button class="filter-tab active" onclick="showFavoriteTab('farmers')">
+                        <i class="fas fa-user-tie"></i> Favorite Farmers
+                    </button>
+                    <button class="filter-tab" onclick="showFavoriteTab('crops')">
+                        <i class="fas fa-seedling"></i> Favorite Crops
+                    </button>
+                </div>
+                
+                <div id="favorite-farmers" class="favorites-content active">
+                    <div id="farmers-list" class="farmers-grid">
+                        <!-- Favorite farmers will be populated here -->
+                    </div>
+                </div>
+                
+                <div id="favorite-crops" class="favorites-content">
+                    <div id="crops-watchlist" class="crops-grid">
+                        <!-- Favorite crops will be populated here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Price Alerts Tab -->
+            <div id="price-alerts" class="tab-content">
+                <div class="section-header">
+                    <h2><i class="fas fa-bell"></i> <span data-lang="price_alerts_title">Price Alerts</span></h2>
+                    <p data-lang="price_alerts_desc">Get notified when crop prices reach your target</p>
+                </div>
+                
+                <div class="alert-actions">
+                    <button class="btn-primary" onclick="showAddAlertForm()">
+                        <i class="fas fa-plus"></i> Add Price Alert
+                    </button>
+                    <button class="btn-secondary" onclick="refreshAlerts()">
+                        <i class="fas fa-refresh"></i> Refresh Alerts
+                    </button>
+                </div>
+                
+                <div id="add-alert-form" class="form-container" style="display: none;">
+                    <h3>Create New Price Alert</h3>
+                    <div class="input-group">
+                        <label for="alert-crop"><i class="fas fa-seedling"></i> Crop</label>
+                        <select id="alert-crop">
+                            <option value="">Select crop</option>
+                            <option value="rice">Rice</option>
+                            <option value="wheat">Wheat</option>
+                            <option value="maize">Maize</option>
+                            <option value="cotton">Cotton</option>
+                            <option value="sugarcane">Sugarcane</option>
+                            <option value="tomato">Tomato</option>
+                        </select>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="alert-price"><i class="fas fa-rupee-sign"></i> Target Price (per kg)</label>
+                        <input type="number" id="alert-price" step="0.01" placeholder="Enter target price">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="alert-type"><i class="fas fa-arrow-up"></i> Alert Type</label>
+                        <select id="alert-type">
+                            <option value="below">Price drops below</option>
+                            <option value="above">Price goes above</option>
+                        </select>
+                    </div>
+                    
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="email-alert" checked>
+                        <label for="email-alert">Email notification</label>
+                    </div>
+                    
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="sms-alert">
+                        <label for="sms-alert">SMS notification</label>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button class="btn-primary" onclick="createPriceAlert()">
+                            <i class="fas fa-save"></i> Create Alert
+                        </button>
+                        <button class="btn-secondary" onclick="cancelAlertForm()">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="alerts-list" class="alerts-list">
+                    <!-- Price alerts will be populated here -->
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <p>&copy; 2025 Smart Farming Assistant - Buyer Portal. <span data-lang="all_rights_reserved">All rights reserved.</span></p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="loading-spinner" class="loading-spinner" style="display: none;">
+        <div class="spinner"></div>
+        <p data-lang="loading">Loading...</p>
+    </div>
+
+    <!-- Purchase Modal -->
+    <div id="purchase-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-shopping-cart"></i> Purchase Crop</h3>
+                <button class="close-modal" onclick="closePurchaseModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="purchase-form">
+                    <!-- Purchase form will be populated here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='translations.js') }}"></script>
+    <script src="{{ url_for('static', filename='buyer-script.js') }}"></script>
+</body>
+</html>

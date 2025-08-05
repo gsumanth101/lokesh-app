@@ -1,0 +1,5 @@
+env
+__pycache__
+crop_recommendation_enhanced_model.pkl
+crop_recommendation_model.pkl
+models

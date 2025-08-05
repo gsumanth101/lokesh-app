@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmer Dashboard - Smart Farming Assistant</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='interface-styles.css') }}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1><i class="fas fa-tractor"></i> Farmer Dashboard</h1>
+                <p>Smart Farming Solutions for Better Yields</p>
+                <div class="header-actions">
+                    <div class="user-info">
+                        <span id="user-name">Welcome, Farmer!</span>
+                        <button class="btn-logout" onclick="logout()">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    </div>
+                    <div class="language-selector">
+                        <select id="languageSelect" onchange="changeLanguage()">
+                            <option value="en">English</option>
+                            <option value="hi">हिंदी</option>
+                            <option value="te">తెలుగు</option>
+                            <option value="ta">தமிழ்</option>
+                            <option value="kn">ಕನ್ನಡ</option>
+                            <option value="ml">മലയാളം</option>
+                            <option value="gu">ગુજરાતી</option>
+                            <option value="mr">मराठी</option>
+                            <option value="bn">বাংলা</option>
+                            <option value="pa">ਪੰਜਾਬੀ</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="nav-tabs">
+            <button class="tab-button active" onclick="showTab('crop-recommendation')">
+                <i class="fas fa-seedling"></i> <span data-lang="crop_recommendation">Crop Recommendation</span>
+            </button>
+            <button class="tab-button" onclick="showTab('my-crops')">
+                <i class="fas fa-leaf"></i> <span data-lang="my_crops">My Crops</span>
+            </button>
+            <button class="tab-button" onclick="showTab('weather-soil')">
+                <i class="fas fa-cloud-sun"></i> <span data-lang="weather_soil">Weather & Soil</span>
+            </button>
+            <button class="tab-button" onclick="showTab('market-prices')">
+                <i class="fas fa-chart-line"></i> <span data-lang="market_prices">Market Prices</span>
+            </button>
+            <button class="tab-button" onclick="showTab('pest-control')">
+                <i class="fas fa-bug"></i> <span data-lang="pest_control">Pest Control</span>
+            </button>
+            <button class="tab-button" onclick="showTab('disease-prediction')">
+                <i class="fas fa-shield-virus"></i> <span data-lang="disease_prediction">Disease Prediction</span>
+            </button>
+            <button class="tab-button" onclick="showTab('sell-crops')">
+                <i class="fas fa-store"></i> <span data-lang="sell_crops">Sell Crops</span>
+            </button>
+            <button class="tab-button" onclick="showTab('news')">
+                <i class="fas fa-newspaper"></i> <span data-lang="news">Agricultural News</span>
+            </button>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Crop Recommendation Tab -->
+            <div id="crop-recommendation" class="tab-content active">
+                <div class="section-header">
+                    <h2><i class="fas fa-seedling"></i> <span data-lang="crop_recommendation_title">AI-Powered Crop Recommendation</span></h2>
+                    <p data-lang="crop_recommendation_desc">Get personalized crop recommendations based on your location, weather, and soil conditions</p>
+                </div>
+                
+                <div class="form-container">
+                    <div class="input-group">
+                        <label for="location"><i class="fas fa-map-marker-alt"></i> <span data-lang="location">Your Location</span></label>
+                        <input type="text" id="location" placeholder="Enter your farm location (e.g., Bangalore, India)">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="weather-api-key"><i class="fas fa-key"></i> <span data-lang="weather_api_key">Weather API Key</span></label>
+                        <input type="password" id="weather-api-key" placeholder="Enter your WeatherAPI key">
+                        <small><a href="https://www.weatherapi.com/" target="_blank" data-lang="get_free_api">Get free API key</a></small>
+                    </div>
+                    
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="manual-soil" onchange="toggleManualSoil()">
+                        <label for="manual-soil" data-lang="manual_soil_data">I have my soil test results</label>
+                    </div>
+                    
+                    <div id="manual-soil-inputs" class="manual-soil-section" style="display: none;">
+                        <h3 data-lang="soil_parameters">Soil Test Results</h3>
+                        <div class="soil-inputs-grid">
+                            <div class="input-group">
+                                <label for="nitrogen">N <span data-lang="nitrogen">(Nitrogen)</span></label>
+                                <input type="number" id="nitrogen" min="0" max="200" value="80">
+                            </div>
+                            <div class="input-group">
+                                <label for="phosphorus">P <span data-lang="phosphorus">(Phosphorus)</span></label>
+                                <input type="number" id="phosphorus" min="0" max="200" value="40">
+                            </div>
+                            <div class="input-group">
+                                <label for="potassium">K <span data-lang="potassium">(Potassium)</span></label>
+                                <input type="number" id="potassium" min="0" max="200" value="60">
+                            </div>
+                            <div class="input-group">
+                                <label for="ph">pH <span data-lang="ph_level">(pH Level)</span></label>
+                                <input type="number" id="ph" min="0" max="14" step="0.1" value="6.5">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn-primary" onclick="getCropRecommendation()">
+                        <i class="fas fa-search"></i> <span data-lang="get_recommendation">Get Crop Recommendation</span>
+                    </button>
+                </div>
+                
+                <div id="recommendation-result" class="result-container" style="display: none;">
+                    <!-- Results will be populated here -->
+                </div>
+            </div>
+
+            <!-- My Crops Tab -->
+            <div id="my-crops" class="tab-content">
+                <div class="section-header">
+                    <h2><i class="fas fa-leaf"></i> <span data-lang="my_crops_title">My Crop Listings</span></h2>
+                    <p data-lang="my_crops_desc">Manage your crop inventory and track sales</p>
+                </div>
+                
+                <div class="crop-actions">
+                    <button class="btn-primary" onclick="showAddCropForm()">
+                        <i class="fas fa-plus"></i> <span data-lang="add_crop">Add New Crop</span>
+                    </button>
+                    <button class="btn-secondary" onclick="refreshMyCrops()">
+                        <i class="fas fa-refresh"></i> <span data-lang="refresh">Refresh</span>
+                    </button>
+                </div>
+                
+                <div id="add-crop-form" class="form-container" style="display: none;">
+                    <h3 data-lang="add_new_crop">Add New Crop Listing</h3>
+                    <div class="input-group">
+                        <label for="crop-name"><i class="fas fa-seedling"></i> <span data-lang="crop_name">Crop Name</span></label>
+                        <input type="text" id="crop-name" placeholder="Enter crop name">
+                    </div>
+                    <div class="input-group">
+                        <label for="crop-quantity"><i class="fas fa-weight"></i> <span data-lang="quantity">Quantity (kg)</span></label>
+                        <input type="number" id="crop-quantity" min="1" placeholder="Enter quantity">
+                    </div>
+                    <div class="input-group">
+                        <label for="crop-price"><i class="fas fa-rupee-sign"></i> <span data-lang="price">Expected Price per kg</span></label>
+                        <input type="number" id="crop-price" min="0" step="0.01" placeholder="Enter expected price">
+                    </div>
+                    <div class="input-group">
+                        <label for="crop-description"><i class="fas fa-comment"></i> <span data-lang="description">Description</span></label>
+                        <textarea id="crop-description" placeholder="Enter crop description (optional)"></textarea>
+                    </div>
+                    <div class="form-actions">
+                        <button class="btn-primary" onclick="addCropListing()">
+                            <i class="fas fa-save"></i> <span data-lang="save_crop">Save Crop</span>
+                        </button>
+                        <button class="btn-secondary" onclick="cancelAddCrop()">
+                            <i class="fas fa-times"></i> <span data-lang="cancel">Cancel</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="my-crops-list" class="crops-grid">
+                    <!-- Farmer's crops will be populated here -->
+                </div>
+            </div>
+
+            <!-- Weather & Soil Tab -->
+            <div id="weather-soil" class="tab-content">
+                <div class="section-header">
+                    <h2><i class="fas fa-cloud-sun"></i> <span data-lang="weather_soil_title">Weather & Soil Analysis</span></h2>
+                    <p data-lang="weather_soil_desc">Monitor weather conditions and analyze your soil</p>
+                </div>
+                
+                <div class="weather-soil-container">
+                    <div class="weather-section">
+                        <h3><i class="fas fa-cloud"></i> Current Weather</h3>
+                        <div class="form-container">
+                            <div class="input-group">
+                                <label for="weather-location"><i class="fas fa-map-marker-alt"></i> Location</label>
+                                <input type="text" id="weather-location" placeholder="Enter location">
+                            </div>
+                            <div class="input-group">
+                                <label for="weather-key"><i class="fas fa-key"></i> Weather API Key</label>
+                                <input type="password" id="weather-key" placeholder="Enter your WeatherAPI key">
+                            </div>
+                            <button class="btn-primary" onclick="getWeatherInfo()">
+                                <i class="fas fa-cloud"></i> Get Weather
+                            </button>
+                        </div>
+                        <div id="weather-result" class="result-container" style="display: none;">
+                            <!-- Weather results will be populated here -->
+                        </div>
+                    </div>
+                    
+                    <div class="soil-section">
+                        <h3><i class="fas fa-mountain"></i> Soil Analysis</h3>
+                        <div class="form-container">
+                            <div class="soil-inputs-grid">
+                                <div class="input-group">
+                                    <label for="soil-nitrogen">N (Nitrogen)</label>
+                                    <input type="number" id="soil-nitrogen" min="0" max="200" value="80">
+                                </div>
+                                <div class="input-group">
+                                    <label for="soil-phosphorus">P (Phosphorus)</label>
+                                    <input type="number" id="soil-phosphorus" min="0" max="200" value="40">
+                                </div>
+                                <div class="input-group">
+                                    <label for="soil-potassium">K (Potassium)</label>
+                                    <input type="number" id="soil-potassium" min="0" max="200" value="60">
+                                </div>
+                                <div class="input-group">
+                                    <label for="soil-ph">pH Level</label>
+                                    <input type="number" id="soil-ph" min="0" max="14" step="0.1" value="6.5">
+                                </div>
+                            </div>
+                            <button class="btn-primary" onclick="analyzeSoil()">
+                                <i class="fas fa-flask"></i> Analyze Soil
+                            </button>
+                        </div>
+                        <div id="soil-result" class="result-container" style="display: none;">
+                            <!-- Soil analysis results will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Market Prices Tab -->
+            <div id="market-prices" class="tab-content">
+                <div class="section-header">
+                    <h2><i class="fas fa-chart-line"></i> <span data-lang="market_prices_title">Current Market Prices</span></h2>
+                    <p data-lang="market_prices_desc">Stay updated with latest crop prices to make informed decisions</p>
+                </div>
+                
+                <div class="market-grid" id="market-grid">
+                    <!-- Market prices will be populated here -->
+                </div>
+            </div>
+
+            <!-- Pest Control Tab -->
+            <div id="pest-control" class="tab-content">
+                <div class="section-header">
+                    <h2><i class="fas fa-bug"></i> <span data-lang="pest_control_title">Pest Control Guide</span></h2>
+                    <p data-lang="pest_control_desc">Get expert advice on pest management for your crops</p>
+                </div>
+                
+                <div class="form-container">
+                    <div class="input-group">
+                        <label for="crop-type"><i class="fas fa-seedling"></i> <span data-lang="crop_type">Select Your Crop</span></label>
+                        <select id="crop-type">
+                            <option value="">Choose your crop</option>
+                            <option value="wheat">Wheat</option>
+                            <option value="rice">Rice</option>
+                            <option value="maize">Maize</option>
+                            <option value="cotton">Cotton</option>
+                            <option value="sugarcane">Sugarcane</option>
+                            <option value="tomato">Tomato</option>
+                            <option value="potato">Potato</option>
+                            <option value="onion">Onion</option>
+                        </select>
+                    </div>
+                    
+                    <button class="btn-primary" onclick="getPestControl()">
+                        <i class="fas fa-shield-alt"></i> <span data-lang="get_pest_info">Get Pest Control Info</span>
+                    </button>
+                </div>
+                
+                <div id="pest-result" class="result-container" style="display: none;">
+                    <!-- Pest control results will be populated here -->
+                </div>
+            </div>
+
+    <!-- Disease Prediction Tab -->
+    <div id="disease-prediction" class="tab-content">
+        <div class="section-header">
+            <h2><i class="fas fa-shield-virus"></i> <span data-lang="disease_prediction_title">Crop Disease Prediction</span></h2>
+            <p data-lang="disease_prediction_desc">Predict potential diseases for your crops based on environmental conditions</p>
+        </div>
+        
+        <div class="form-container">
+            <div class="input-group">
+                <label for="disease-crop-type"><i class="fas fa-seedling"></i> <span data-lang="crop_type">Select Crop</span></label>
+                <select id="disease-crop-type">
+                            <option value="">Choose your crop</option>
+                            <option value="wheat">Wheat</option>
+                            <option value="rice">Rice</option>
+                            <option value="maize">Maize</option>
+                            <option value="cotton">Cotton</option>
+                            <option value="tomato">Tomato</option>
+                        </select>
+                    </div>
+                    
+                    <div class="environmental-inputs">
+                        <h3><i class="fas fa-thermometer-half"></i> Environmental Conditions</h3>
+                        <div class="env-inputs-grid">
+                            <div class="input-group">
+                                <label for="disease-temp">Temperature (°C)</label>
+                                <input type="number" id="disease-temp" min="-10" max="50" value="25">
+                            </div>
+                            <div class="input-group">
+                                <label for="disease-humidity">Humidity (%)</label>
+                                <input type="number" id="disease-humidity" min="0" max="100" value="60">
+                            </div>
+                            <div class="input-group">
+                                <label for="disease-rainfall">Rainfall (mm)</label>
+                                <input type="number" id="disease-rainfall" min="0" value="100">
+                            </div>
+                            <div class="input-group">
+                                <label for="disease-wind">Wind Speed (m/s)</label>
+                                <input type="number" id="disease-wind" min="0" max="50" value="5">
+                            </div>
+                            <div class="input-group">
+                                <label for="disease-ph">Soil pH</label>
+                                <input type="number" id="disease-ph" min="0" max="14" step="0.1" value="6.5">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn-primary" onclick="predictDisease()">
+                        <i class="fas fa-virus"></i> <span data-lang="predict_disease">Predict Disease Risk</span>
+                    </button>
+                </div>
+                
+                <div id="disease-result" class="result-container" style="display: none;">
+                    <!-- Disease prediction results will be populated here -->
+                    <div id="disease-info">
+                        <!-- Dynamic disease prediction result will be displayed here -->
+                    </div>
+            </div>
+        </main>
+
+            <!-- Sell Crops Tab -->
+            <div id="sell-crops" class="tab-content">
+                <div class="section-header">
+                    <h2><i class="fas fa-store"></i> <span data-lang="sell_crops_title">Sell Your Crops</span></h2>
+                    <p data-lang="sell_crops_desc">List your crops for sale and connect with buyers</p>
+                </div>
+                
+                <div class="sell-actions">
+                    <button class="btn-primary" onclick="showSellForm()">
+                        <i class="fas fa-plus"></i> <span data-lang="list_for_sale">List Crop for Sale</span>
+                    </button>
+                    <button class="btn-secondary" onclick="viewMyListings()">
+                        <i class="fas fa-list"></i> <span data-lang="view_my_listings">View My Listings</span>
+                    </button>
+                </div>
+                
+                <div id="sell-form" class="form-container" style="display: none;">
+                    <h3>List Crop for Sale</h3>
+                    <div class="input-group">
+                        <label for="sell-crop-name"><i class="fas fa-seedling"></i> Crop Name</label>
+                        <input type="text" id="sell-crop-name" placeholder="Enter crop name">
+                    </div>
+                    <div class="input-group">
+                        <label for="sell-quantity"><i class="fas fa-weight"></i> Quantity Available (kg)</label>
+                        <input type="number" id="sell-quantity" min="1" placeholder="Enter quantity">
+                    </div>
+                    <div class="input-group">
+                        <label for="sell-price"><i class="fas fa-rupee-sign"></i> Price per kg</label>
+                        <input type="number" id="sell-price" min="0" step="0.01" placeholder="Enter selling price">
+                    </div>
+                    <div class="input-group">
+                        <label for="sell-contact"><i class="fas fa-phone"></i> Contact Number</label>
+                        <input type="tel" id="sell-contact" placeholder="Enter your contact number">
+                    </div>
+                    <div class="input-group">
+                        <label for="sell-location"><i class="fas fa-map-marker-alt"></i> Location</label>
+                        <input type="text" id="sell-location" placeholder="Enter your location">
+                    </div>
+                    <div class="form-actions">
+                        <button class="btn-primary" onclick="listCropForSale()">
+                            <i class="fas fa-save"></i> List for Sale
+                        </button>
+                        <button class="btn-secondary" onclick="cancelSellForm()">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="my-listings" class="listings-grid">
+                    <!-- Farmer's listings will be populated here -->
+                </div>
+            </div>
+
+            !-- Weekend Farming Section in News Tab --
+            div class="weekend-farming-container"
+                !-- Video Upload Section --
+                div class="upload-section"
+                    h3i class="fas fa-upload"/i Upload Your Farming Videos/h3
+                    div class="upload-info"
+                        pstrong🎯 Upload 3 videos to unlock exciting prizes!/strong/p
+                        pShare your farming techniques, tips, or experiences with the community/p
+                    /div
+                    
+                    div class="form-container"
+                        div class="input-group"
+                            label for="video-upload"i class="fas fa-file-video"/i Select Video File/label
+                            input type="file" id="video-upload" accept="video/*" multiple
+                        /div
+                        div class="input-group"
+                            label for="video-title"i class="fas fa-heading"/i Video Title/label
+                            input type="text" id="video-title" placeholder="Enter video title"
+                        /div
+                        div class="input-group"
+                            label for="video-description"i class="fas fa-comment"/i Description/label
+                            textarea id="video-description" placeholder="Describe your video content"/textarea
+                        /div
+                        button class="btn-primary" onclick="uploadFarmingVideo()"
+                            i class="fas fa-upload"/i Upload Video
+                        /button
+                    /div
+                    
+                    div id="upload-progress" style="display: none;"
+                        div class="progress-bar"
+                            div class="progress-fill" id="progress-fill"/div
+                        /div
+                    /div
+                /div
+                
+                !-- Prizes Section --
+                div class="prizes-section"
+                    h3i class="fas fa-trophy"/i Exciting Prizes/h3
+                    div class="prizes-grid"
+                        div class="prize-card"
+                            i class="fas fa-medal"/i
+                            h4Bronze Level/h4
+                            pUpload 1 video/p
+                            span class="reward"Free Seeds Package/span
+                        /div
+                        div class="prize-card"
+                            i class="fas fa-trophy"/i
+                            h4Silver Level/h4
+                            pUpload 2 videos/p
+                            span class="reward"Fertilizer Vouchers/span
+                        /div
+                        div class="prize-card gold"
+                            i class="fas fa-crown"/i
+                            h4Gold Level/h4
+                            pUpload 3 videos/p
+                            span class="reward"Premium Tool Kit + Cash Prize/span
+                        /div
+                    /div
+                /div
+                
+                !-- Default Videos Section --
+                div class="default-videos-section"
+                    h3i class="fas fa-play-circle"/i Featured Farming Videos/h3
+                    div class="videos-grid"
+                        div class="video-card"
+                            div class="video-thumbnail"
+                                i class="fas fa-seedling"/i
+                            /div
+                            h4Modern Rice Cultivation Techniques/h4
+                            pLearn advanced methods for rice farming/p
+                            button class="btn-secondary"Watch Now/button
+                        /div
+                        div class="video-card"
+                            div class="video-thumbnail"
+                                i class="fas fa-tractor"/i
+                            /div
+                            h4Smart Irrigation Systems/h4
+                            pEfficient water management for crops/p
+                            button class="btn-secondary"Watch Now/button
+                        /div
+                        div class="video-card"
+                            div class="video-thumbnail"
+                                i class="fas fa-leaf"/i
+                            /div
+                            h4Organic Farming Methods/h4
+                            pSustainable and eco-friendly farming/p
+                            button class="btn-secondary"Watch Now/button
+                        /div
+                    /div
+                /div
+                
+                !-- Lecture Notes Section --
+                div class="lecture-notes-section"
+                    h3i class="fas fa-book"/i Farming Lecture Notes/h3
+                    div class="notes-grid"
+                        div class="note-card"
+                            i class="fas fa-file-pdf"/i
+                            h4Crop Rotation Guide/h4
+                            pComplete guide to crop rotation practices/p
+                            button class="btn-secondary"Download PDF/button
+                        /div
+                        div class="note-card"
+                            i class="fas fa-file-pdf"/i
+                            h4Pest Management Manual/h4
+                            pComprehensive pest control strategies/p
+                            button class="btn-secondary"Download PDF/button
+                        /div
+                        div class="note-card"
+                            i class="fas fa-file-pdf"/i
+                            h4Soil Health Assessment/h4
+                            pUnderstanding and improving soil quality/p
+                            button class="btn-secondary"Download PDF/button
+                        /div
+                    /div
+                /div
+            /div
+        !-- End of Weekend Farming Section --
+
+            <!-- Agricultural News Tab -->
+            div id="news" class="tab-content"
+                div class="section-header"
+                    h2i class="fas fa-newspaper"/i span data-lang="news_title"Agricultural News/span/h2
+                    p data-lang="news_desc"Stay updated with the latest agricultural developments and market trends/p
+                /div
+
+                !-- Weekend Farming Content --
+                div class="weekend-farming-container"
+                    !-- Video Upload Section --
+                    div class="upload-section"
+                        h3i class="fas fa-upload"/i Upload Your Farming Videos/h3
+                        div class="upload-info"
+                            pstrong🎯 Upload 3 videos to unlock exciting prizes!/strong/p
+                            pShare your farming techniques, tips, or experiences with the community/p
+                        /div
+
+                        div class="form-container"
+                            div class="input-group"
+                                label for="video-upload"i class="fas fa-file-video"/i Select Video File/label
+                                input type="file" id="video-upload" accept="video/*" multiple
+                            /div
+                            div class="input-group"
+                                label for="video-title"i class="fas fa-heading"/i Video Title/label
+                                input type="text" id="video-title" placeholder="Enter video title"
+                            /div
+                            div class="input-group"
+                                label for="video-description"i class="fas fa-comment"/i Description/label
+                                textarea id="video-description" placeholder="Describe your video content"/textarea
+                            /div
+                            button class="btn-primary" onclick="uploadFarmingVideo()"
+                                i class="fas fa-upload"/i Upload Video
+                            /button
+                        /div
+
+                        div id="upload-progress" style="display: none;"
+                            div class="progress-bar"
+                                div class="progress-fill" id="progress-fill"/div
+                            /div
+                        /div
+                    /div
+
+                    !-- Prizes Section --
+                    div class="prizes-section"
+                        h3i class="fas fa-trophy"/i Exciting Prizes/h3
+                        div class="prizes-grid"
+                            div class="prize-card"
+                                i class="fas fa-medal"/i
+                                h4Bronze Level/h4
+                                pUpload 1 video/p
+                                span class="reward"Free Seeds Package/span
+                            /div
+                            div class="prize-card"
+                                i class="fas fa-trophy"/i
+                                h4Silver Level/h4
+                                pUpload 2 videos/p
+                                span class="reward"Fertilizer Vouchers/span
+                            /div
+                            div class="prize-card gold"
+                                i class="fas fa-crown"/i
+                                h4Gold Level/h4
+                                pUpload 3 videos/p
+                                span class="reward"Premium Tool Kit + Cash Prize/span
+                            /div
+                        /div
+                    /div
+
+                    !-- Default Videos Section --
+                    div class="default-videos-section"
+                        h3i class="fas fa-play-circle"/i Featured Farming Videos/h3
+                        div class="videos-grid"
+                            div class="video-card"
+                                div class="video-thumbnail"
+                                    i class="fas fa-seedling"/i
+                                /div
+                                h4Modern Rice Cultivation Techniques/h4
+                                pLearn advanced methods for rice farming/p
+                                button class="btn-secondary"Watch Now/button
+                            /div
+                            div class="video-card"
+                                div class="video-thumbnail"
+                                    i class="fas fa-tractor"/i
+                                /div
+                                h4Smart Irrigation Systems/h4
+                                pEfficient water management for crops/p
+                                button class="btn-secondary"Watch Now/button
+                            /div
+                            div class="video-card"
+                                div class="video-thumbnail"
+                                    i class="fas fa-leaf"/i
+                                /div
+                                h4Organic Farming Methods/h4
+                                pSustainable and eco-friendly farming/p
+                                button class="btn-secondary"Watch Now/button
+                            /div
+                        /div
+                    /div
+
+                    !-- Lecture Notes Section --
+                    div class="lecture-notes-section"
+                        h3i class="fas fa-book"/i Farming Lecture Notes/h3
+                        div class="notes-grid"
+                            div class="note-card"
+                                i class="fas fa-file-pdf"/i
+                                h4Crop Rotation Guide/h4
+                                pComplete guide to crop rotation practices/p
+                                button class="btn-secondary"Download PDF/button
+                            /div
+                            div class="note-card"
+                                i class="fas fa-file-pdf"/i
+                                h4Pest Management Manual/h4
+                                pComprehensive pest control strategies/p
+                                button class="btn-secondary"Download PDF/button
+                            /div
+                            div class="note-card"
+                                i class="fas fa-file-pdf"/i
+                                h4Soil Health Assessment/h4
+                                pUnderstanding and improving soil quality/p
+                                button class="btn-secondary"Download PDF/button
+                            /div
+                        /div
+                    /div
+                /div
+
+                div class="news-container"
+                    div class="news-controls"
+                        button class="btn-primary" onclick="fetchLatestNews()"
+                            i class="fas fa-refresh"/i Fetch Latest News
+                        /button
+                        div class="news-filters"
+                            select id="news-category"
+                                option value="all"All Categories/option
+                                option value="farming"Farming/option
+                                option value="market"Market Prices/option
+                                option value="policy"Government Policies/option
+                                option value="weather"Weather Updates/option
+                            /select
+                        /div
+                    /div
+                div id="news-feed" class="news-feed"
+                    div class="news-placeholder"
+                        i class="fas fa-newspaper"/i
+                        h3Click "Fetch Latest News" to load articles/h3
+                        pGet the most recent agricultural news and updates/p
+                    /div
+                /div
+            /div
+        /main
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <p>&copy; 2025 Smart Farming Assistant - Farmer Portal. <span data-lang="all_rights_reserved">All rights reserved.</span></p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="loading-spinner" class="loading-spinner" style="display: none;">
+        <div class="spinner"></div>
+        <p data-lang="loading">Loading...</p>
+    </div>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='translations.js') }}"></script>
+    <script src="{{ url_for('static', filename='farmer-script.js') }}"></script>
+</body>
+</html>

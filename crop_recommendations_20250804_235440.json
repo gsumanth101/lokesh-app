@@ -1,0 +1,103 @@
+{
+  "weather_data": {
+    "average_temperature": -76.08,
+    "average_precipitation": -90.73,
+    "average_humidity": -21.71,
+    "average_wind_speed": -93.22,
+    "average_solar_radiation": -149.71
+  },
+  "recommendations": {
+    "crop_1": {
+      "name": "Maize (Corn)",
+      "planting_time": "June-July (Kharif) or November-December (Rabi)",
+      "harvest_time": "September-October (Kharif) or March-April (Rabi)",
+      "suitability_reason": "Maize is adaptable to various climates and requires moderate rainfall. Grows well in temperature range of 15-35\u00b0C with well-drained soils.",
+      "organic_pesticides": [
+        {
+          "name": "Neem Seed Kernel Extract (NSKE)",
+          "type": "Insecticide",
+          "application": "Spray 5% solution every 15 days",
+          "target": "Fall armyworm, stem borer, aphids"
+        },
+        {
+          "name": "Beauveria bassiana",
+          "type": "Entomopathogenic Fungus",
+          "application": "Apply 5-10g per liter of water",
+          "target": "White grub, termites, thrips"
+        },
+        {
+          "name": "Pheromone Traps",
+          "type": "Biological Control",
+          "application": "Install 5-8 traps per hectare",
+          "target": "Fall armyworm, stem borer moths"
+        }
+      ],
+      "chemical_pesticides": [
+        {
+          "name": "Chlorantraniliprole 18.5% SC",
+          "type": "Insecticide",
+          "application": "Spray 150ml per hectare",
+          "target": "Fall armyworm, stem borer"
+        },
+        {
+          "name": "Propiconazole 25% EC",
+          "type": "Systemic Fungicide",
+          "application": "Spray 1ml per liter of water",
+          "target": "Turcicum leaf blight, rust"
+        },
+        {
+          "name": "Atrazine 50% WP",
+          "type": "Pre-emergence Herbicide",
+          "application": "Apply 1-2 kg per hectare within 3 days of sowing",
+          "target": "Annual grasses and broad-leaf weeds"
+        }
+      ]
+    },
+    "crop_2": {
+      "name": "Rice",
+      "planting_time": "June-July (Kharif) or December-January (Rabi)",
+      "harvest_time": "November-December (Kharif) or April-May (Rabi)",
+      "suitability_reason": "Rice thrives in warm, humid conditions with abundant water supply. Ideal for areas with average temperature 20-35\u00b0C and high rainfall or irrigation.",
+      "organic_pesticides": [
+        {
+          "name": "Neem Oil",
+          "type": "Insecticide/Fungicide",
+          "application": "Spray 3-5ml per liter of water every 10-15 days",
+          "target": "Brown planthopper, stem borer, blast disease"
+        },
+        {
+          "name": "Bacillus thuringiensis (Bt)",
+          "type": "Biological Insecticide",
+          "application": "Apply 1-2 kg per hectare during early larval stage",
+          "target": "Yellow stem borer, leaf folder"
+        },
+        {
+          "name": "Trichoderma",
+          "type": "Biological Fungicide",
+          "application": "Seed treatment 4-10g per kg of seed or soil application",
+          "target": "Sheath blight, root rot"
+        }
+      ],
+      "chemical_pesticides": [
+        {
+          "name": "Carbofuran 3G",
+          "type": "Systemic Insecticide",
+          "application": "Apply 33 kg per hectare at transplanting",
+          "target": "Stem borer, brown planthopper, whorl maggot"
+        },
+        {
+          "name": "Tricyclazole 75% WP",
+          "type": "Systemic Fungicide",
+          "application": "Spray 0.6g per liter at boot leaf stage",
+          "target": "Blast disease"
+        },
+        {
+          "name": "Pretilachlor 50% EC",
+          "type": "Pre-emergence Herbicide",
+          "application": "Apply 1-1.5 liter per hectare 3-5 days after transplanting",
+          "target": "Annual grasses and broad-leaf weeds"
+        }
+      ]
+    }
+  }
+}

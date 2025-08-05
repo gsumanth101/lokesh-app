@@ -1,0 +1,499 @@
+/* Modern Smart Farming Assistant UI - Agricultural Theme */
+
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+/* CSS Variables - Agricultural Color Palette */
+:root {
+    /* Core Agricultural Colors */
+    --primary-green: #2E7D32;
+    --secondary-green: #4CAF50;
+    --accent-green: #81C784;
+    --light-green: #E8F5E8;
+    --dark-green: #1B5E20;
+    
+    /* Natural Colors */
+    --soil-brown: #8D6E63;
+    --harvest-gold: #FFB300;
+    --sky-blue: #42A5F5;
+    --sunset-orange: #FF7043;
+    --leaf-green: #66BB6A;
+    --water-blue: #1976D2;
+    
+    /* Semantic Colors */
+    --organic-color: #4CAF50;
+    --chemical-color: #FF5722;
+    --healthy-color: #2E7D32;
+    --infected-color: #D32F2F;
+    --warning-color: #FF9800;
+    
+    /* UI Elements */
+    --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    --card-shadow-hover: 0 16px 48px rgba(0, 0, 0, 0.15);
+    --border-radius: 16px;
+    --border-radius-large: 24px;
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 1.5rem;
+    --spacing-lg: 2rem;
+    --spacing-xl: 3rem;
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, var(--primary-green), var(--secondary-green));
+    --gradient-success: linear-gradient(135deg, var(--healthy-color), var(--organic-color));
+    --gradient-warning: linear-gradient(135deg, var(--warning-color), var(--harvest-gold));
+    --gradient-danger: linear-gradient(135deg, var(--infected-color), var(--chemical-color));
+    --gradient-sky: linear-gradient(135deg, var(--sky-blue), var(--water-blue));
+}
+
+/* Global Base Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.stApp {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #E8F5E8 0%, #C8E6C9 30%, #A5D6A7 100%);
+    min-height: 100vh;
+    position: relative;
+}
+
+/* Agricultural Background Pattern */
+.stApp::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        radial-gradient(circle at 20% 20%, rgba(76, 175, 80, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(139, 195, 74, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 40% 60%, rgba(102, 187, 106, 0.03) 0%, transparent 50%);
+    background-size: 300px 300px, 250px 250px, 400px 400px;
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* Hide Streamlit Elements */
+#MainMenu, footer, header, .stDeployButton {
+    visibility: hidden !important;
+}
+
+/* Main Container */
+.main .block-container {
+    padding: var(--spacing-lg) var(--spacing-md);
+    max-width: 1400px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: var(--border-radius-large);
+    box-shadow: var(--card-shadow);
+    margin: var(--spacing-md) auto;
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Dynamic Header Component */
+.dynamic-header {
+    background: var(--gradient-primary);
+    color: white;
+    padding: var(--spacing-xl);
+    border-radius: var(--border-radius-large);
+    margin-bottom: var(--spacing-lg);
+    box-shadow: var(--card-shadow);
+    position: relative;
+    overflow: hidden;
+    text-align: center;
+}
+
+.dynamic-header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    animation: float 6s ease-in-out infinite;
+}
+
+.dynamic-header h1 {
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 800;
+    margin: 0;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+    position: relative;
+    z-index: 1;
+}
+
+.dynamic-header .subtitle {
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    opacity: 0.9;
+    margin-top: var(--spacing-sm);
+    font-weight: 400;
+    position: relative;
+    z-index: 1;
+}
+
+/* Modern Card System */
+.modern-card {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: var(--spacing-lg);
+    margin: var(--spacing-md) 0;
+    box-shadow: var(--card-shadow);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.modern-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: var(--gradient-primary);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+}
+
+.modern-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--card-shadow-hover);
+}
+
+.modern-card:hover::before {
+    transform: scaleX(1);
+}
+
+/* Specialized Cards */
+.crop-recommendation-card {
+    background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(129, 199, 132, 0.1));
+    border-left: 6px solid var(--healthy-color);
+}
+
+.disease-prediction-card {
+    background: linear-gradient(135deg, rgba(211, 47, 47, 0.1), rgba(239, 83, 80, 0.1));
+    border-left: 6px solid var(--infected-color);
+}
+
+.pesticide-card {
+    border-left: 6px solid var(--chemical-color);
+}
+
+.organic-pesticide-card {
+    border-left: 6px solid var(--organic-color);
+    background: linear-gradient(135deg, rgba(76, 175, 80, 0.05), rgba(129, 199, 132, 0.05));
+}
+
+.weather-card {
+    background: linear-gradient(135deg, rgba(66, 165, 245, 0.1), rgba(144, 202, 249, 0.1));
+    border-left: 6px solid var(--sky-blue);
+}
+
+/* Interactive Metric Displays */
+.metric-display {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: var(--spacing-md);
+    text-align: center;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+.metric-display::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(76, 175, 80, 0.1), transparent);
+    transition: left 0.6s ease;
+}
+
+.metric-display:hover {
+    border-color: var(--secondary-green);
+    transform: scale(1.05);
+    box-shadow: 0 8px 24px rgba(76, 175, 80, 0.2);
+}
+
+.metric-display:hover::before {
+    left: 100%;
+}
+
+.metric-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--primary-green);
+    margin: 0;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+.metric-label {
+    font-size: 0.95rem;
+    color: #666;
+    margin-top: var(--spacing-xs);
+    font-weight: 500;
+}
+
+/* Enhanced Buttons */
+.stButton > button {
+    background: var(--gradient-primary);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    padding: var(--spacing-md) var(--spacing-xl);
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 16px rgba(76, 175, 80, 0.3);
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.stButton > button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.stButton > button:hover {
+    background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(76, 175, 80, 0.4);
+}
+
+.stButton > button:hover::before {
+    left: 100%;
+}
+
+/* Form Elements */
+.stTextInput > div > div > input,
+.stNumberInput > div > div > input,
+.stSelectbox > div > div > select {
+    border-radius: var(--border-radius);
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    padding: var(--spacing-md);
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    background: white;
+}
+
+.stTextInput > div > div > input:focus,
+.stNumberInput > div > div > input:focus,
+.stSelectbox > div > div > select:focus {
+    border-color: var(--secondary-green);
+    box-shadow: 0 0 0 4px rgba(76, 175, 80, 0.1);
+    outline: none;
+}
+
+/* Status Messages */
+.stSuccess {
+    background: var(--gradient-success);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    border-left: 6px solid var(--healthy-color);
+    box-shadow: var(--card-shadow);
+}
+
+.stError {
+    background: var(--gradient-danger);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    border-left: 6px solid var(--infected-color);
+    box-shadow: var(--card-shadow);
+}
+
+.stWarning {
+    background: var(--gradient-warning);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    border-left: 6px solid var(--warning-color);
+    box-shadow: var(--card-shadow);
+}
+
+.stInfo {
+    background: var(--gradient-sky);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    border-left: 6px solid var(--sky-blue);
+    box-shadow: var(--card-shadow);
+}
+
+/* Sidebar Enhancement */
+.css-1d391kg {
+    background: var(--gradient-primary);
+    border-radius: 0 var(--border-radius-large) var(--border-radius-large) 0;
+}
+
+.css-1d391kg .stSelectbox label,
+.css-1d391kg .stNumberInput label,
+.css-1d391kg .stTextInput label {
+    color: white;
+    font-weight: 600;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+/* Icon Wrapper */
+.icon-wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: var(--gradient-primary);
+    color: white;
+    font-size: 1.5rem;
+    margin-right: var(--spacing-md);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+}
+
+/* Progress Indicators */
+.progress-ring {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: conic-gradient(var(--secondary-green) 0deg, #E0E0E0 0deg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.progress-ring::before {
+    content: '';
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: white;
+    position: absolute;
+}
+
+.progress-value {
+    position: relative;
+    z-index: 1;
+    font-weight: 700;
+    color: var(--primary-green);
+}
+
+/* Responsive Grid */
+.responsive-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--spacing-md);
+    margin: var(--spacing-lg) 0;
+}
+
+/* Animations */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-10px) rotate(5deg); }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+.slide-in-up {
+    animation: slideInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.fade-in-scale {
+    animation: fadeInScale 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.floating {
+    animation: float 3s ease-in-out infinite;
+}
+
+.pulsing {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .dynamic-header {
+        padding: var(--spacing-lg);
+    }
+    
+    .dynamic-header h1 {
+        font-size: 2rem;
+    }
+    
+    .main .block-container {
+        margin: var(--spacing-xs);
+        padding: var(--spacing-lg);
+    }
+    
+    .modern-card {
+        padding: var(--spacing-md);
+    }
+    
+    .metric-display {
+        padding: var(--spacing-sm);
+    }
+    
+    .responsive-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-sm);
+    }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --card-bg: #1E1E1E;
+        --text-primary: #FFFFFF;
+        --text-secondary: #B0B0B0;
+    }
+    
+    .modern-card {
+        background: var(--card-bg);
+        color: var(--text-primary);
+        border-color: rgba(255, 255, 255, 0.1);
+    }
+}
